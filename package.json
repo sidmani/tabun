@@ -1,0 +1,24 @@
+{
+  "name": "tabun",
+  "version": "0.0.1",
+  "description": "a SRS system built on Git",
+  "main": "index.js",
+  "scripts": {
+    "build": "node bin/build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sid Mani",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "js-yaml": "^3.12.0",
+    "liquidjs": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2",
+    "mkdirp": "^0.5.1",
+    "uglifyify": "^5.0.0"
+  }
+}
