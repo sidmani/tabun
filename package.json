@@ -4,7 +4,9 @@
   "description": "a SRS system built on Git",
   "main": "index.js",
   "scripts": {
-    "build": "node bin/build.js",
+    "build": "node -e \"require('./bin/build.js')()\"",
+    "watch": "node bin/watch.js",
+    "deploy": "npm run build && git add www/ && git subtree push --prefix www origin gh-pages",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sid Mani",
@@ -19,6 +21,7 @@
     "babelify": "^8.0.0",
     "browserify": "^16.2.2",
     "mkdirp": "^0.5.1",
+    "recursive-copy": "^2.0.9",
     "uglifyify": "^5.0.0"
   }
 }
