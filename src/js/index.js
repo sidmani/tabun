@@ -13,3 +13,49 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+const user = require('./user');
+const deck = require('./deck');
+
+const start = function() {
+  // set default settings in localstorage if nonexistent
+  if (!localStorage.settings) {
+    localStorage.settings = JSON.stringify({
+      decks: [{
+        github: "sidmani/tabun_example"
+      }]
+    });
+  }
+
+  const settings = JSON.parse(window.localStorage.settings);
+  const decks = settings.decks;
+  // hide text
+  document.getElementById('desc').style.display = 'none';
+  // show app
+  const app = document.getElementById('app');
+  app.style.display = 'block';
+
+  // load decks
+  document.getElementById('subtitle').innerHTML = "Decks";
+  const loadedDecks = [];
+  for (let i = 0; i < decks.length; i++) {
+    deck.load(decks[i])
+      .then(d => {
+        loadedDecks.push(d);
+        app.innerHTML = displayDecks(loadedDecks);
+      });
+  }
+};
+
+const displayDecks = function(decks) {
+  let result = `<div class="decks">`;
+  for (let i = 0; i < decks.length; i++) {
+    console.log(decks[i]);
+    result += `<div class="deck"><span class="deck-name">${decks[i].name}</span><span class="deck-author">${decks[i].author}</span></div>`;
+  }
+  return result + `</div>`;
+};
+
+module.exports = {
+  start,
+  displayDecks,
+};

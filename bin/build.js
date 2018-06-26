@@ -6,12 +6,12 @@ const mkdirp = require('mkdirp');
 const cp = require('recursive-copy');
 
 module.exports = function build() {
-  mkdirp('docs/');
+  mkdirp('www/');
 
   // build javascript
-  browserify(['src/js/index.js'])
+  browserify(['src/js/index.js'], { standalone: 'tabun', debug: true })
     .transform(babelify, { global: true })
-    .transform(uglifyify, { global: true })
+    // .transform(uglifyify, { global: true })
     .bundle()
     .on('error', (err) => console.log(err))
     .pipe(fs.createWriteStream('www/index.js'));
