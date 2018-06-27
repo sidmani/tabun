@@ -1,0 +1,12 @@
+# .anodize.yml
+target: www
+source: src/web
+template: src/template
+ignore:
+  - '**/.*'
+head:
+  title: Tabun SRS
+  description: 'A distributed spaced-repetition system'
+  css: [ /main.css ]
+  raw: [ '<script src="/index.js"></script>' ]
+indexify: true

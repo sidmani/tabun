@@ -16,6 +16,8 @@ body {
   font-size: 20px;
   max-width: 50em;
   color: #657b83;
+  padding-left: 3em;
+  padding-right: 3em;
 }
 
 h1 {
@@ -27,8 +29,6 @@ a {
 }
 
 footer {
-  position: fixed;
-  bottom: 10px;
   height: 50px;
   width: 100%;
   font-size: 12px;
@@ -48,6 +48,13 @@ footer {
 }
 
 /* deck listing */
-.decks {
+.deck {
+  border-bottom: 1px solid #657b83;
+  padding-bottom: 8px;
+  color: #b58900;
+}
 
+.deck-version {
+  color: #268bd2;
+  padding-left: 10px;
 }
