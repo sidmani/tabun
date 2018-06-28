@@ -7,6 +7,6 @@ ignore:
 head:
   title: Tabun SRS
   description: 'A distributed spaced-repetition system'
-  css: [ /tabun/main.css ]
-  raw: [ '<script src="/tabun/index.js"></script>' ]
+  css: [ /main.css ]
+  js: [ /index.js ]
 indexify: true
