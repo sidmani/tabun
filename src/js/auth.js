@@ -1,14 +1,34 @@
-module.exports = function() {
-  const params = window.location.search.substr(1);
-  if (params.length > 0) {
-    // return from github
-    console.log("received params " + params);
-  } else if (!window.localStorage.token) {
-    // redirect to GitHub
-    const querystr = `client_id=7289916c579cec081358&redirect_uri=https://sidmani.github.io/tabun/auth&scope=gist&state=${"foobar"}`
+const drive = require('./drive');
+const qs = require('./querystring');
 
-    window.location = "https://github.com/login/oauth/authorize?" + querystr;
+module.exports = async function auth() {
+  const hash = window.location.hash.substr(1);
+  if (hash.length > 0) {
+    // return from google
+    const response = qs.parse(hash);
+
+    if (response.error) {
+      console.error('Auth failure.');
+      return;
+    }
+
+    // validate the token
+    await drive.validate(response.access_token);
+    window.localStorage.token = response.access_token;
+    window.location = '/main/';
+  } else if (!window.localStorage.token) {
+    // redirect to google
+    drive.auth();
   } else {
-    // check auth?
+    // token exists
+    try {
+      await drive.validate(window.localStorage.token);
+      // token is ok
+      window.location = '/main/';
+    } catch (e) {
+      // reauthenticate
+      window.localStorage.token = undefined;
+      drive.auth();
+    }
   }
-}
+};

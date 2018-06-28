@@ -13,11 +13,13 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+require("regenerator-runtime/runtime");
+
 const user = require('./user');
 const decks = require('./decks');
 const auth = require('./auth');
 
-const start = function(querydict) {
+const start = function() {
 
   if (!localStorage.token) {
     // token doesn't exist, login with github
