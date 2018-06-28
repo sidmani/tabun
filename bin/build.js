@@ -11,7 +11,6 @@ const rm = require('rimraf');
 const b = browserify(['src/js/index.js'], {
     cache: {},
     packageCache: {},
-    plugin: [watchify],
     standalone: 'tabun',
     debug: true
   })
@@ -24,6 +23,7 @@ function bundle() {
     .pipe(fs.createWriteStream('www/index.js'))
 }
 
+
 module.exports.build = function build() {
   mkdirp('www');
   bundle();
@@ -31,6 +31,7 @@ module.exports.build = function build() {
 }
 
 module.exports.watch = function watch() {
+  b.plugin(watchify);
   mkdirp('www');
   b.on('update', bundle);
   bundle();
