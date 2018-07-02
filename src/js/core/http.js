@@ -18,7 +18,7 @@ async function request(url, query, body, method, headers) {
   });
 }
 
-async function multipart(parts, mimeTypes, boundary = 'boundary') {
+function multipart(parts, mimeTypes, boundary = 'boundary') {
   let result = '';
   for (let i = 0; i < parts.length; i++) {
     result += `--${boundary}
@@ -29,9 +29,11 @@ ${parts[i]}
   }
   result += `
 --${boundary}--`;
+  return result;
 }
 
 module.exports = {
   request,
   multipart,
+  mime,
 };

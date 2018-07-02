@@ -1,5 +1,5 @@
-const Drive = require('./drive');
-const qs = require('./querystring');
+const Drive = require('../core/drive');
+const qs = require('../core/querystring');
 
 module.exports = async function auth() {
   const hash = window.location.hash.substr(1);
@@ -21,13 +21,7 @@ module.exports = async function auth() {
     } catch (e) {
       document.body.innerHTML = 'Authentication error. <a href="/auth/">Try again</a>';
     }
-  } else {
-    try {
-      const drive = Drive.retrieve();
-      await drive.validate();
-      window.location = '../main/';
-    } catch (e) {
-      window.location = Drive.authURL;
-    }
+  } else if (await Drive.setup()) {
+    window.location = '../main/';
   }
 };

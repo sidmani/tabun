@@ -18,7 +18,7 @@ function Drive(token, expiry) {
 }
 
 Drive.prototype.httpMethod = async function(endpoint, query, body, method, headers) {
-  return http.request(endpoint, query, body, method, Object.assign({ Authorization: `Bearer ${token}` }, headers));
+  return http.request(endpoint, query, body, method, Object.assign({ Authorization: `Bearer ${this.token}` }, headers));
 };
 
 Drive.authURL = `${endpoints.auth}?${qs.build({
@@ -27,13 +27,28 @@ Drive.authURL = `${endpoints.auth}?${qs.build({
     response_type: 'token',
     scope: authScope,
     include_granted_scopes: true,
-    state,
+    state: 'foo',
   })}`; 
 
 // store and retrieve the token in localstorage
 Drive.retrieve = function() {
+  if (!window.localStorage.driveData) {
+    throw new Error('Could not load token.');
+  }
+
   const saved = JSON.parse(window.localStorage.driveData);
   return new Drive(saved.token, saved.expiry);
+};
+
+// TODO: this function is convenient but breaks encapsulation
+Drive.setup = async function() {
+  try {
+    const d = Drive.retrieve();
+    await d.validate();
+    return d;
+  } catch(e) {
+    window.location = Drive.authURL;
+  }
 };
 
 Drive.prototype.persist = function() {
@@ -41,8 +56,8 @@ Drive.prototype.persist = function() {
 };
 
 Drive.prototype.validate = async function() {
-  const json = (await this.httpMethod(endpoints.tokenValidation, { access_token: token }, undefined, 'GET')).json();
-
+  const res = await this.httpMethod(endpoints.tokenValidation, { access_token: this.token }, undefined, 'GET');
+  const json = await res.json();
   if (json.error || json.aud !== clientId || json.scope !== authScope) {
     throw new Error('Token validation failed');
   }
@@ -53,12 +68,12 @@ Drive.prototype.get = async function(id) {
 };
 
 Drive.prototype.list = async function(q, spaces = ['appDataFolder']) {
-  const json = (await this.httpMethod(endpoints.files, {
+  const res = await this.httpMethod(endpoints.files, {
     spaces: spaces.join(','),
     q,
-  }, undefined, 'GET')).json();
+  }, undefined, 'GET');
  
-  return json.files;
+  return (await res.json()).files;;
 };
 
 Drive.prototype.put = async function(name, data, parents = ['appDataFolder']) {
@@ -77,20 +92,6 @@ Drive.prototype.put = async function(name, data, parents = ['appDataFolder']) {
 
 Drive.prototype.update = async function(id, newData) {
   return this.httpMethod(`${endpoints.upload}/${id}`, { uploadType: 'media' }, newData, 'PATCH');
-}
-
-async function validateOrAuth() {
-  const token = getToken();
-  if (!token) {
-    auth();
-    return;
-  }
-
-  try {
-    await validate(token);
-  } catch (e) {
-    auth();
-  }
 }
 
 module.exports = Drive;

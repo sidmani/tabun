@@ -1,74 +1,40 @@
+const SyncedFile = require('./syncedFile');
+
+// first call should always be synchronize(defaults) to prevent overwriting of remote data
 function Settings(drive) {
   this.drive = drive;
+  this.file = new SyncedFile(drive, 'settings', 'tabun.json'); 
 }
 
-Settings.prototype.retrieveRemoteId = async function() {
-  if (window.localStorage.settingsId) {
-    return window.localStorage.settingsId;
-  }
-
-  const res = await this.drive.list('name = \'tabun.json\'');
-  if (res.files.length === 0) {
-    return undefined;
-  }
-
-  window.localStorage.settingsId = res.files[0].id;
-  return res.files[0].id; 
+Settings.default = function() {
+  return {
+    decks: [],
+  };
 };
 
-Settings.prototype.retrieveRemote = async function() {
-  const id = await this.retrieveRemoteId(); 
-  if (!id) {
-    window.localStorage.settingsId = undefined;
-    return undefined;
-  }
-
-  try {
-    return (await drive.get(id)).json();
-  } catch(e) {
-    window.localStorage.settingsId = undefined;
-    throw e;
-  }
+Settings.prototype.synchronize = async function(object) {
+  return this.file.synchronize(object ? JSON.stringify(object) : undefined);
 };
 
-Settings.prototype.setRemote = async function(object) {
-  const id = await this.retrieveRemoteId();
-  const str = JSON.stringify(object);
-  if (!id) {
-    // tabun.json does not exist
-    return drive.put('tabun.json', str);
-  }
-  // tabun.json exists
-  return drive.update(id, str);
+Settings.prototype.set = function(object) {
+  this.file.setLocal(JSON.stringify(object));
+  return this.synchronize();
 };
 
-Settings.prototype.retrieveLocal = function() {
-  const local = window.localStorage.settings;
-  if (!local) {
-    return undefined;
-  }
-  return JSON.parse(local);
+Settings.prototype.get = function() {
+  return JSON.parse(this.file.retrieve());
 };
 
-Settings.prototype.setLocal = function(object) {
-  window.localStorage.settings = JSON.stringify(object);
-};
-
-Settings.prototype.synchronize = async function() {
-  const remote = await this.retrieveRemote();
-  const local = this.retrieveLocal();
-  
-  if (!remote || (local && local.time > remote.time)) {
-    // local supersedes remote because either
-    // - remote does not exist
-    // - both exist and local is newer
-    await this.setRemote(local);
-  } else {
-    // remote supersedes local because either:
-    // - local does not exist OR
-    // - both exist and remote is newer
-    this.setLocal(remote);
-  }
-};
+// all mutators operate exclusively on the local data
+// expected to call synchronize() upon once changes are completed
+// Settings.prototype.addDeck = function(source, locator) {
+//   const s = this.get();
+//  const userData = new SyncedFile(this.drive, `${source}:${locator}`);
+//  s.decks.push({
+//    source,
+//    at: locator,
+//  });
+//  this.set(
+// };
 
 module.exports = Settings; 

@@ -1,5 +1,5 @@
-const drive = require('./drive');
-const settings = require('./settings');
+const Settings = require('../core/settings');
+const Drive = require('../core/drive');
 
 function load(deck) {
   if (deck.github) {
@@ -21,9 +21,12 @@ function generateHTML(decks) {
 
 async function display() {
   // redirect to auth if token doesn't exist
-  await drive.validateOrAuth();
-  const file = await settings.get();
-  console.log(file);
+  const drive = await Drive.setup();
+
+  // create settings and sync
+  const settings = new Settings(drive);
+  await settings.synchronize(Settings.default());
+  // console.log(await settings.get())
   // const decks = [];
   // const app = document.getElementById('app');
   // settings.decks
