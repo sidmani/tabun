@@ -1,5 +1,5 @@
-// const fetch = require('fetch');
 const drive = require('./drive');
+const settings = require('./settings');
 
 function load(deck) {
   if (deck.github) {
@@ -22,11 +22,8 @@ function generateHTML(decks) {
 async function display() {
   // redirect to auth if token doesn't exist
   await drive.validateOrAuth();
-  // check if tabun.json exists in google drive
-  if ((await drive.list('name = \'tabun.json\'', window.localStorage.token)).files.length === 0) {
-
-  }
-
+  const file = await settings.get();
+  console.log(file);
   // const decks = [];
   // const app = document.getElementById('app');
   // settings.decks

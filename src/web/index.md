@@ -7,4 +7,4 @@ It stores your data in open, human-readable formats, and uses shared flashcard d
 
 Tabun is open-source software licensed under the terms of the [GNU-AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html) and developed cooperatively [on GitHub](https://github.com/sidmani/tabun).
 
-[Get started (sign in with Google)](/auth/)
+[Get started (sign in with Google)](./auth/)

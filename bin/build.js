@@ -10,6 +10,7 @@ const b = browserify(['src/js/index.js'], {
   cache: {},
   packageCache: {},
   standalone: 'tabun',
+  debug: true,
 })
   .transform(babelify, { global: true })
   .transform(uglifyify, { global: true });

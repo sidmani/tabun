@@ -12,6 +12,6 @@ module.exports = {
     return ret;
   },
   build(obj) {
-    return Object.keys(obj).map(key => `${encodeURI(key)}=${encodeURI(obj[key])}`).join('&');
+    return Object.keys(obj).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`).join('&');
   }
 };
