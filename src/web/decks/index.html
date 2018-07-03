@@ -6,17 +6,19 @@
 <meta name="description" content="A distributed spaced-repetition system">
 <link rel="stylesheet" href="/main.css">
 <script src="/index.js"></script>
+<script>
+  window.onload = tabun.decks.display;
+</script>
 </head>
 <body>
 <h1 id="title">TABUN</h1>
-<div id="subtitle">Settings</div>
-<script>
-  window.onload = tabun.settings.display;
-</script>
-<div id="app"></div>
+<div id="subtitle">Decks</div>
+<div id="app">
+  <div id="decks">
+  </div>
+</div>
 <footer>
 <p>Tabun is developed by <a href="https://sidmani.com">Sid Mani</a>. This website uses the <a href="http://ethanschoonover.com/solarized">Solarized</a> theme.</p>
-
 <a href="/decks">Decks</a>
 <a href="/settings">Settings</a>
 </footer>

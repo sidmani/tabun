@@ -1,10 +1,10 @@
-const anodize = require('anodize');
 const browserify = require('browserify');
 const babelify = require('babelify');
 const uglifyify = require('uglifyify');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const watchify = require('watchify');
+const ncp = require('ncp');
 
 const b = browserify(['src/js/index.js'], {
   cache: {},
@@ -24,14 +24,17 @@ function bundle() {
 
 module.exports.build = function build() {
   mkdirp('www');
+  ncp('src/web', 'www');
   bundle();
-  anodize.run();
 };
 
 module.exports.watch = function watch() {
   b.plugin(watchify);
   mkdirp('www');
+  fs.watch('src/web', () => {
+    ncp('src/web', 'www');
+  });
   b.on('update', bundle);
+  ncp('src/web', 'www');
   bundle();
-  anodize.watch({ input: '.', serve: true, port: 8000 });
 };

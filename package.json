@@ -15,10 +15,10 @@
   "dependencies": {
     "fetch": "^1.1.0",
     "liquidjs": "^4.0.0",
+    "ncp": "^2.0.0",
     "regenerator-runtime": "^0.12.0"
   },
   "devDependencies": {
-    "anodize": "^1.1.3",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "babelify": "^8.0.0",

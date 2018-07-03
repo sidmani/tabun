@@ -4,14 +4,10 @@ const Settings = require('../core/settings');
 const build = require('./buildHTML');
 
 function layout(decks) {
-  const obj = {
-    tag: 'div',
-    'class': 'decks',
-    children: [],
-  }
+  const div = document.getElementById('decks');  
   
   for (let i = 0; i < decks.length; i += 1) {
-    obj.children.push({
+    div.appendChild(build({
       tag: 'div',
       'class': 'deck',
       children: [{
@@ -23,10 +19,8 @@ function layout(decks) {
         'class': 'deck-source',
         text: decks[i].source,
       }],
-    }); 
+    })); 
   }
-  
-  document.getElementById('app').appendChild(build(obj));
 }
 
 async function display() {
@@ -41,6 +35,5 @@ async function display() {
   const decks = new Decks(settings, drive);
   layout(decks.list());
 }
-
 
 module.exports = { display };
