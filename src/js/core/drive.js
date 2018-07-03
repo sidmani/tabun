@@ -1,5 +1,5 @@
-const qs = require('./querystring');
-const http = require('./http');
+const qs = require('./util/querystring');
+const http = require('./util/http');
 
 const authScope = 'https://www.googleapis.com/auth/drive.appdata';
 const endpoints = {

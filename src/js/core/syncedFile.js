@@ -1,8 +1,7 @@
-function SyncedFile(drive, localStorageKey, name) {
+function SyncedFile(drive, name) {
   this.drive = drive;
   this.name = name;
-  this.localStorageKey = localStorageKey;
-  this.localStorageIdKey = localStorageKey + '_id';
+  this.localStorageIdKey = name + '_id';
 }
 
 function prependTimestamp(str) {
@@ -75,12 +74,12 @@ SyncedFile.prototype.setRemote = async function(content) {
 
 // get file with prepended timestamp from localStorage
 SyncedFile.prototype.retrieveLocal = function() {
-  return window.localStorage[this.localStorageKey];
+  return window.localStorage[this.name];
 }
 
 // set file in localStorage
 SyncedFile.prototype.setLocal = function(content) {
-  window.localStorage[this.localStorageKey] = prependTimestamp(content);  
+  window.localStorage[this.name] = prependTimestamp(content);  
 }
 
 // convenience method to get data and strip timestamp

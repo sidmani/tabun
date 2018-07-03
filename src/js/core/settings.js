@@ -3,7 +3,7 @@ const SyncedFile = require('./syncedFile');
 // first call should always be synchronize(defaults) to prevent overwriting of remote data
 function Settings(drive) {
   this.drive = drive;
-  this.file = new SyncedFile(drive, 'settings', 'tabun.json'); 
+  this.file = new SyncedFile(drive, 'tabun.json'); 
 }
 
 Settings.default = function() {
@@ -24,17 +24,5 @@ Settings.prototype.set = function(object) {
 Settings.prototype.get = function() {
   return JSON.parse(this.file.retrieve());
 };
-
-// all mutators operate exclusively on the local data
-// expected to call synchronize() upon once changes are completed
-// Settings.prototype.addDeck = function(source, locator) {
-//   const s = this.get();
-//  const userData = new SyncedFile(this.drive, `${source}:${locator}`);
-//  s.decks.push({
-//    source,
-//    at: locator,
-//  });
-//  this.set(
-// };
 
 module.exports = Settings; 

@@ -13,40 +13,14 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-require("regenerator-runtime/runtime");
+require('regenerator-runtime/runtime');
 
-const user = require('./user');
-const decks = require('./decks');
-const auth = require('./auth');
-
-const start = function() {
-
-  if (!localStorage.token) {
-    // token doesn't exist, login with github
-    // localStorage.settings = JSON.stringify({
-    //   decks: [{
-    //     github: "sidmani/tabun_example",
-    //     version: "0.0.1",
-    //   }]
-    // });
-
-  }
-
-  // const settings = JSON.parse(window.localStorage.settings);
-  // const decks = settings.decks;
-  // // load decks
-  // const loadedDecks = [];
-  // for (let i = 0; i < decks.length; i++) {
-  //   deck.load(decks[i])
-  //     .then(d => {
-  //       loadedDecks.push(d);
-  //       app.innerHTML = displayDecks(loadedDecks);
-  //     });
-  // }
-};
+const settings = require('./render/settings');
+const decks = require('./render/decks');
+const auth = require('./render/auth');
 
 module.exports = {
-  start,
+  settings,
   decks,
   auth,
 };

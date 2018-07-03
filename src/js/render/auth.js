@@ -1,5 +1,5 @@
 const Drive = require('../core/drive');
-const qs = require('../core/querystring');
+const qs = require('../core/util/querystring');
 
 module.exports = async function auth() {
   const hash = window.location.hash.substr(1);

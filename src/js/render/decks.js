@@ -1,22 +1,32 @@
-const Settings = require('../core/settings');
+const Decks = require('../core/deck/decks');
 const Drive = require('../core/drive');
+const Settings = require('../core/settings');
+const build = require('./buildHTML');
 
-function load(deck) {
-  if (deck.github) {
-    // use public github API to load
-    return fetch('https://api.github.com/repos/' + deck.github + '/contents/deck.json')
-      .then(res => res.json())
-      .then(json => JSON.parse(window.atob(json.content)))
+function layout(decks) {
+  const obj = {
+    tag: 'div',
+    'class': 'decks',
+    children: [],
   }
-  throw Error('unsupported deck source');
-}
-
-function generateHTML(decks) {
-  let result = '<div class="decks">';
+  
   for (let i = 0; i < decks.length; i += 1) {
-    result += `<div class="deck"><span class="deck-name">${decks[i].name}</span><span class="deck-version">${decks[i].version}</span></div>`;
+    obj.children.push({
+      tag: 'div',
+      'class': 'deck',
+      children: [{
+        tag: 'span',
+        'class': 'deck-name',
+        text: decks[i].name,
+      }, {
+        tag: 'span',
+        'class': 'deck-source',
+        text: decks[i].source,
+      }],
+    }); 
   }
-  return `${result}</div>`;
+  
+  document.getElementById('app').appendChild(build(obj));
 }
 
 async function display() {
@@ -26,19 +36,11 @@ async function display() {
   // create settings and sync
   const settings = new Settings(drive);
   await settings.synchronize(Settings.default());
-  // console.log(await settings.get())
-  // const decks = [];
-  // const app = document.getElementById('app');
-  // settings.decks
-  //   .map(deck => load(deck))
-  //   .forEach(deckPromise => {
-  //     deckPromise
-  //       .then(d => {
-  //         decks.push(d);
-  //         app.innerHTML = generateHTML(decks);
-  //       });
-  //   });
+  
+  // create deck manager
+  const decks = new Decks(settings, drive);
+  layout(decks.list());
 }
 
 
-module.exports = { load, display };
+module.exports = { display };
