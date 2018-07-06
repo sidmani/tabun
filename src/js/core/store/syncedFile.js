@@ -4,29 +4,6 @@ function SyncedFile(drive, name) {
   this.localStorageIdKey = name + '_id';
 }
 
-function prependTimestamp(str) {
-  return `${new Date().getTime()}|${str}`;
-}
-
-function stripTimestamp(str) {
-  return str.substr(str.indexOf('|') + 1);
-}
-
-function getTimestamp(str) {
-  return parseInt(str.substr(0, str.indexOf('|')), 10);
-}
-
-function splitTimestamp(str) {
-  if (!str) {
-    return undefined;
-  }
-
-  return {
-    time: getTimestamp(str),
-    contents: stripTimestamp(str),
-  };
-}
-
 // get id of file by name
 SyncedFile.prototype.retrieveRemoteId = async function() {
   if (window.localStorage[this.localStorageIdKey]) {
@@ -98,28 +75,6 @@ SyncedFile.prototype.retrieve = function() {
 };
 
 SyncedFile.prototype.synchronize = async function(contents) {
-  const remote = splitTimestamp(await this.retrieveRemote());
-  const local = splitTimestamp(this.retrieveLocal());
-
-  if (local && ((remote && local.time > remote.time) || !remote)) {
-    // overwrite remote with local if local exists and either:
-    // - remote exists and is outdated
-    // - remote does not exist
-    await this.setRemote(local.contents);
-  } else if (remote) {
-    // overwrite local with remote if remote exists and either:
-    // - local exists and is outdated
-    // - local does not exist
-    this.setLocal(remote.contents);
-  } else {
-    // both do not exist
-    if (!contents) {
-      throw new Error('No data to synchronize!');
-    }
-
-    this.setLocal(contents);
-    await this.setRemote(contents);
-  }
 };
 
 SyncedFile.prototype.delete = async function() {

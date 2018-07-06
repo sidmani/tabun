@@ -2,6 +2,7 @@ const LocalStorageEntry = function(key) {
   this.key = key;
 };
 
+// functions for timestamp parse and insertion
 function prependTimestamp(str) {
   return `${new Date().getTime()}|${str}`;
 }
@@ -25,29 +26,24 @@ function splitTimestamp(str) {
   };
 }
 
-LocalStorageEntry.prototype.load = function() {
+LocalStorageEntry.prototype.synchronize = require('./synchronize');
+
+// singleTimestamp protocol
+LocalStorageEntry.prototype.get = function() {
   if (!window.localStorage[this.key]) {
     return {};
   }
   return JSON.parse(stripTimestamp(window.localStorage[this.key]));
 };
 
-LocalStorageEntry.prototype.dump = function(value) {
+LocalStorageEntry.prototype.set = function(value) {
   window.localStorage[this.key] = prependTimestamp(JSON.stringify(value));
 };
 
-LocalStorageEntry.prototype.get = function(key) {
-  return this.load()[key];
-};
-
-LocalStorageEntry.prototype.set = function(key, value) {
-  const c = this.load(); 
-  c[key] = value;
-  this.dump(c);
-};
-
-// XXX: no error handling here
 LocalStorageEntry.prototype.timestamp = function() {
+  if (!window.localStorage[this.key]) {
+    return 0;
+  }
   return getTimestamp(window.localStorage[this.key]);
 };
 
