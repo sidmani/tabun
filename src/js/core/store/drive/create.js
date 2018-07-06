@@ -18,6 +18,9 @@ module.exports = {
         'Content-Type': 'multipart/related; boundary=boundary',
         'Content-Length': Buffer.byteLength(data, 'utf8'),
       },
+      handler: async function(res) {
+        return (await res.json()).id;
+      },
     };
   }, 
   createMeta: function(id, properties, parents = ['appDataFolder']) {

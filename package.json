@@ -13,6 +13,7 @@
   "author": "Sid Mani",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
+    "dexie": "^2.0.4",
     "fetch": "^1.1.0",
     "liquidjs": "^4.0.0",
     "ncp": "^2.0.0",

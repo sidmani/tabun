@@ -42,6 +42,12 @@ SyncedFile.prototype.retrieveRemoteId = async function() {
   return files[0].id;
 };
 
+SyncedFile.prototype.retrieveRemoteTimestamp = async function(id) {
+  const meta = await this.drive.meta(id, 'modifiedTime');
+  console.log(meta);
+  return Date.parse(meta.modifiedTime).getTime();
+};
+
 // get file with prepended timestamp from remote
 SyncedFile.prototype.retrieveRemote = async function() {
   const id = await this.retrieveRemoteId();
@@ -114,6 +120,13 @@ SyncedFile.prototype.synchronize = async function(contents) {
     this.setLocal(contents);
     await this.setRemote(contents);
   }
-}
+};
+
+SyncedFile.prototype.delete = async function() {
+  const id = await this.retrieveRemoteId();
+  await this.drive.delete(id);
+  window.localStorage.removeItem(this.localStorageIdKey);
+  window.localStorage.removeItem(this.name);
+};
 
 module.exports = SyncedFile;

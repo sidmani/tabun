@@ -18,6 +18,7 @@ require('regenerator-runtime/runtime');
 const settings = require('./render/settings');
 const decks = require('./render/decks');
 const auth = require('./render/auth');
+const dexie = require('dexie');
 
 module.exports = {
   settings,
