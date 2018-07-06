@@ -31,7 +31,7 @@ module.exports.build = function build() {
 module.exports.watch = function watch() {
   b.plugin(watchify);
   mkdirp('www');
-  fs.watch('src/web', () => {
+  fs.watch('src/web', { recursive: true }, () => {
     ncp('src/web', 'www');
   });
   b.on('update', bundle);
