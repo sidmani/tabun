@@ -4,7 +4,6 @@ function Drive(token, expiry) {
 }
 
 Object.assign(Drive.prototype, require('./create.js'));
-Object.assign(Drive.prototype, require('./update.js'));
 Object.assign(Drive.prototype, require('./request.js'));
 Object.assign(Drive.prototype, require('./read.js'));
 
