@@ -1,49 +1,32 @@
-const LocalStorageEntry = function(key) { 
+const LocalStorageEntry = function (key) {
   this.key = key;
 };
-
-// functions for timestamp parse and insertion
-function prependTimestamp(str) {
-  return `${new Date().getTime()}|${str}`;
-}
-
-function stripTimestamp(str) {
-  return str.substr(str.indexOf('|') + 1);
-}
-
-function getTimestamp(str) {
-  return parseInt(str.substr(0, str.indexOf('|')), 10);
-}
-
-function splitTimestamp(str) {
-  if (!str) {
-    return undefined;
-  }
-
-  return {
-    time: getTimestamp(str),
-    contents: stripTimestamp(str),
-  };
-}
 
 LocalStorageEntry.prototype.synchronize = require('./synchronize');
 
 // singleTimestamp protocol
-LocalStorageEntry.prototype.get = function() {
-  if (!window.localStorage[this.key]) {
+LocalStorageEntry.prototype.get = function () {
+  const str = window.localStorage[this.key];
+  if (!str) {
     return {};
   }
-  return JSON.parse(stripTimestamp(window.localStorage[this.key]));
+
+  // strip timestamp and return parsed JSON
+  const json = str.substr(str.indexOf('|') + 1);
+  return JSON.parse(json);
 };
 
-LocalStorageEntry.prototype.set = function(value) {
-  window.localStorage[this.key] = prependTimestamp(JSON.stringify(value));
+LocalStorageEntry.prototype.set = function (value, timestamp) {
+  // store concatenated timestamp and JSON
+  window.localStorage[this.key] = `${timestamp}|${JSON.stringify(value)}`;
 };
 
-LocalStorageEntry.prototype.timestamp = function() {
-  if (!window.localStorage[this.key]) {
+LocalStorageEntry.prototype.timestamp = function () {
+  const str = window.localStorage[this.key];
+  if (!str) {
     return 0;
   }
-  return getTimestamp(window.localStorage[this.key]);
-};
 
+  // get timestamp and return parsed integer
+  return parseInt(str.substr(0, str.indexOf('|')), 10);
+};
