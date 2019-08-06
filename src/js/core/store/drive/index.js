@@ -36,14 +36,14 @@ Drive.prototype.persist = function() {
 // validate drive token
 Drive.prototype.validate = function() {
   return {
-    endpoint: endpoints.tokenValidation;
+    endpoint: endpoints.tokenValidation,
     query: { access_token: this.token },
     method: 'GET',
     handler: async function(res) {
       const json = await res.json();
       if (json.error || json.aud !== clientId || json.scope !== authScope) {
         throw new Error('Token validation failed');
-      }     
+      }
     },
   };
 };

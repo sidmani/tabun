@@ -43,18 +43,45 @@ footer {
 
 #subtitle {
   font-size: 36px;
-  padding-bottom: 60px;
+  padding-bottom: 15px;
   color: #93a1a1;
 }
 
 /* deck listing */
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  border-bottom: 1px solid;
+}
+
+tr:nth-child(2n) {
+  background-color: #eee8d5;;
+}
+
+tr:nth-child(2n+1) {
+}
+
+col.name {
+  width: 25%;
+}
+
+col.source {
+  width: 50%;
+}
+
 .deck {
-  border-bottom: 1px solid #657b83;
+  padding-top: 20px;
   padding-bottom: 8px;
   color: #b58900;
 }
 
-.deck-version {
-  color: #268bd2;
-  padding-left: 10px;
+#add-fields, #add {
+  padding-top: 10px;
+  font-size: 18px;
 }
+

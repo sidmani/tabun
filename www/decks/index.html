@@ -14,7 +14,31 @@
 <h1 id="title">TABUN</h1>
 <div id="subtitle">Decks</div>
 <div id="app">
-  <div id="decks">
+  <table id="decks">
+    <colgroup>
+      <col class="name" />
+      <col class="source" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Source</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <div id="add-fields">
+    <a id="add" href="#">Add deck...</a>
+    <div id="add-input" style="display:none;">
+      <span>Add deck from: </span>
+      <select id="source">
+        <option value="github">GitHub</option>
+      </select>
+      <input type="text" id="locator" placeholder="user/repository">
+      <a href="#" id="add-ok">OK</a>
+      <a href="#" id="add-no">Cancel</a>
+    </div>
   </div>
 </div>
 <footer>

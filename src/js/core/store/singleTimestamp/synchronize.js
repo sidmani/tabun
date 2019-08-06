@@ -13,4 +13,6 @@ module.exports = async function (other, contents) {
     const now = new Date().getTime();
     await Promise.all([this.set(contents, now), other.set(contents, now)]);
   }
+
+  // otherwise timestamps are equal and presumed already synchronized
 };

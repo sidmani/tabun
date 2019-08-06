@@ -1,9 +1,10 @@
-const SyncedFile = require('./syncedFile');
+const Local = require('./store/singleTimestamp/localStorageEntry.js');
+const Remote = require('./store/singleTimestamp/file.js');
 
 // first call should always be synchronize(defaults) to prevent overwriting of remote data
 function Settings(drive) {
   this.drive = drive;
-  this.file = new SyncedFile(drive, 'tabun.json'); 
+  this.local = new Local('settings');
 }
 
 Settings.default = function() {
@@ -13,16 +14,19 @@ Settings.default = function() {
 };
 
 Settings.prototype.synchronize = async function(object) {
-  return this.file.synchronize(object ? JSON.stringify(object) : undefined);
+  if (!this.remote) {
+    const remote = ;
+    this.remote = await Remote.byName('tabun.json', this.drive) || await Remote.create('tabun.json', t
+  }
+  return this.local.synchronize(this.remote, object);
 };
 
 Settings.prototype.set = function(object) {
-  this.file.setLocal(JSON.stringify(object));
-  return this.synchronize();
+  this.local.set(object, new Date().getTime());
 };
 
 Settings.prototype.get = function() {
-  return JSON.parse(this.file.retrieve());
+  return this.local.get();
 };
 
 module.exports = Settings; 

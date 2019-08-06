@@ -1,0 +1,23 @@
+module.exports = function (other) {
+  const [local, foreign] = await Promise.all([this.versions(), other.versions()]);
+  let unsyncedLocal = [];
+  let unsyncedForeign = [];
+
+  let i = local.length - 1;
+  let j = foreign.length - 1;
+
+  while (i >= 0 && j >= 0) {
+    if (local[i] === foreign[j]) {
+      break;
+    }
+
+    if (local[i] > foreign[j]) {
+      unsyncedLocal.push(local[i]);
+      i--;
+    }
+
+    if (local[i] < foreign[j]) {
+      j--;
+    }
+  }
+;
